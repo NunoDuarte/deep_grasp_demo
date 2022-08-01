@@ -26,6 +26,7 @@ find_package(catkin REQUIRED COMPONENTS
 # System dependencies are found with CMake's conventions
 find_package(Eigen3 REQUIRED)
 find_package(PCL 1.8 REQUIRED)
+find_package(OpenCV 4.2 REQUIRED )
 
 find_library(GPD_LIB NAMES gpd PATHS /usr/local/lib PATH_SUFFIXES lib NO_DEFAULT_PATH)
 if (GPD_LIB)
@@ -88,6 +89,7 @@ include_directories(
   include
   ${catkin_INCLUDE_DIRS}
 )
+include_directories( ${OpenCV_INCLUDE_DIRS} )
 
 # Declare a C++ library with project namespace to avoid naming collision
 add_library(${PROJECT_NAME}
@@ -106,7 +108,8 @@ add_dependencies(${PROJECT_NAME}
 # Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}
 										  ${catkin_LIBRARIES}
-											${PCL_LIBRARIES}
+											${PCL_LIBRARIES}	
+										${OpenCV_LIBS}
 )
 
 # Declare a C++ executable
@@ -140,7 +143,7 @@ target_link_libraries(grasp_cloud_detection
 											${PROJECT_NAME}
 											${Eigen3_LIBRARIES}
 											${PCL_LIBRARIES}
-											${GPD_LIB}
+											/home/nuno/Documents/third_party/gpd/build/INSTALL/lib/libgpd.so
 )
 
 target_link_libraries(point_cloud_server

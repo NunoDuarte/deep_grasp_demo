@@ -1,12 +1,11 @@
 # Deep Grasp Demo
 <img src="https://picknik.ai/assets/images/logo.jpg" width="120">
-# My fork is stable to work on Ubuntu 20.04 and ROS noetic
+# My fork is stable to work on Ubuntu 20.04 and ROS noetic 
 
 1) [Overview](#Overview) </br>
 2) [Packages](#Packages) </br>
 3) [Getting Started](#Getting-Started) </br>
 4) [Install Grasp Pose Detection](#Install-Grasp-Pose-Detection) </br>
-5) [Install Dex-Net](#Install-Dex-Net) </br>
 6) [Download ROS Packages](#Download-ROS-Packages) </br>
 7) [Launching Demos and Further Details](#Launching-Demos-and-Further-Details) </br>
 8) [Depth Sensor Data](#Depth-Sensor-Data) </br>
@@ -94,33 +93,6 @@ sudo make install
 5) Configuration File Path
 
 In `moveit_task_constructor_gpd/config/gpd_congfig.yaml` navigate to line 33 and update `weights_file` to contain the absolute file path to the location of the [lenet params](https://github.com/atenpas/gpd/tree/master/models/lenet/15channels/params) directory. This directory contains the learned model weights and is located where the GPD repository was cloned.
-
-
-## Install Dex-Net
-1) It is recommended to upgrade pip and to create a virtual environment
-   prior to running the install script in the next step.
-   ```
-   python3 -m pip install --upgrade pip
-   ```
-
-2) Run the install script to download the requirements </br>
-  If you have a GPU this option will install tensorflow with GPU support. This script
-  will install packages for Python 3.
-  ```
-  wget https://raw.githubusercontent.com/PickNikRobotics/deep_grasp_demo/master/dexnet_install.sh
-  wget https://raw.githubusercontent.com/PickNikRobotics/deep_grasp_demo/master/dexnet_requirements.txt
-  chmod +x dexnet_install.sh
-  ./dexnet_install.sh {cpu|gpu}
-  ```
-
-3) Download the pretrained models
-  ```
-  ./dexnet_deps/gqcnn/scripts/downloads/models/download_models.sh
-  ```
-
-4) Configuration File Paths
-
-In `moveit_task_constructor_gpd/config/dexnet_config.yaml` specify the absolute file paths to the `model_dir` and `model_params` parameters for the Dex-Net 4.0 parallel jaw configuration. The `model_name` is already set to use the Dex-Net 4.0 parallel jaw configuration. The `model_dir` parameter specifies the path to the learned model weights located in `gqcnn/cfg/examples/replication/dex-net_4.0_pj.yaml` and the `model_params` parameter specifies the model configuration located in `gqcnn/models`. If you use the `dexnet_install.sh` script the `gqcnn` directory will be located inside the `dexnet_deps` directory.
 
 
 ## Download ROS Packages
