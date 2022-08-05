@@ -7,6 +7,8 @@
   <arg unless="$(arg load_cloud)" name="point_cloud_topic" value="/camera/depth/color/points" doc="point cloud topic name"/>
 
   <!-- file paths -->
+  <!--  value= $(find moveit_task_constructor_gpd)/data/pointclouds/cylinder.pcd"-->
+  <!-- <arg if="$(arg load_cloud)" name="path_to_pcd_file" value="/home/nuno/Documents/kinova_grasping/tmp_data/partial_pc_small.pcd" doc="path to point cloud file"/> -->
   <arg if="$(arg load_cloud)" name="path_to_pcd_file" value="$(find moveit_task_constructor_gpd)/data/pointclouds/cylinder.pcd" doc="path to point cloud file"/>
   <arg name="path_to_gpd_config" value="$(find moveit_task_constructor_gpd)/config/gpd_config.yaml" doc="path to GPD config and gripper params file"/>
 

@@ -151,13 +151,23 @@ void GraspDetection::sampleGrasps()
     server_->setAborted(result_);
     return;
   }
-
+   
+  ofstream fw("/home/nuno/Documents/kinova_grasping/tmp_data/grasp_poses_gpd.txt", std::ofstream::out);
+  if (fw.is_open())
+        
+    
   for (auto id : grasp_id)
   {
     // transform grasp from camera optical link into frame_id (panda_link0)
+    const Eigen::Isometry3d g_ =
+        Eigen::Translation3d(grasps.at(id)->getPosition()) * Eigen::Quaterniond(grasps.at(id)->getOrientation());
+
     const Eigen::Isometry3d transform_opt_grasp =
         Eigen::Translation3d(grasps.at(id)->getPosition()) * Eigen::Quaterniond(grasps.at(id)->getOrientation());
 
+    const Eigen::Vector3d t = g_.translation();
+    const Eigen::Quaterniond q(g_.rotation());
+    
     const Eigen::Isometry3d transform_base_grasp = trans_base_cam_ * transform_cam_opt_ * transform_opt_grasp;
     const Eigen::Vector3d trans = transform_base_grasp.translation();
     const Eigen::Quaterniond rot(transform_base_grasp.rotation());
@@ -179,7 +189,15 @@ void GraspDetection::sampleGrasps()
     // Grasp is selected based on cost not score
     // Invert score to represent grasp with lowest cost
     feedback_.costs.emplace_back(static_cast<double>(1.0 / grasps.at(id)->getScore()));
+    
+    fw << trans.x()  <<" " << trans.y()   <<" "<< trans.z()   <<" "<< rot.x()   <<" "<< rot.y()   <<" "<< rot.z()   <<" "<< rot.w()   <<" "<< static_cast<double>(1.0 / grasps.at(id)->getScore()) << "\n";
+	  
   }
+  fw.close();
+    
+  
+  
+  //exit(0);
 
   server_->publishFeedback(feedback_);
   result_.grasp_state = "success";
