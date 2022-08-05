@@ -162,42 +162,39 @@ void GraspDetection::sampleGrasps()
     const Eigen::Isometry3d g_ =
         Eigen::Translation3d(grasps.at(id)->getPosition()) * Eigen::Quaterniond(grasps.at(id)->getOrientation());
 
-    const Eigen::Isometry3d transform_opt_grasp =
-        Eigen::Translation3d(grasps.at(id)->getPosition()) * Eigen::Quaterniond(grasps.at(id)->getOrientation());
-
     const Eigen::Vector3d t = g_.translation();
     const Eigen::Quaterniond q(g_.rotation());
     
-    const Eigen::Isometry3d transform_base_grasp = trans_base_cam_ * transform_cam_opt_ * transform_opt_grasp;
-    const Eigen::Vector3d trans = transform_base_grasp.translation();
-    const Eigen::Quaterniond rot(transform_base_grasp.rotation());
+    //const Eigen::Isometry3d transform_base_grasp = trans_base_cam_ * transform_cam_opt_ * transform_opt_grasp;
+    //const Eigen::Vector3d trans = transform_base_grasp.translation();
+    //const Eigen::Quaterniond rot(transform_base_grasp.rotation());
 
     // convert back to PoseStamped
-    geometry_msgs::PoseStamped grasp_pose;
-    grasp_pose.header.frame_id = frame_id_;
-    grasp_pose.pose.position.x = trans.x();
-    grasp_pose.pose.position.y = trans.y();
-    grasp_pose.pose.position.z = trans.z();
+    //geometry_msgs::PoseStamped grasp_pose;
+    //grasp_pose.header.frame_id = frame_id_;
+    //grasp_pose.pose.position.x = trans.x();
+    //grasp_pose.pose.position.y = trans.y();
+    //grasp_pose.pose.position.z = trans.z();
 
-    grasp_pose.pose.orientation.w = rot.w();
-    grasp_pose.pose.orientation.x = rot.x();
-    grasp_pose.pose.orientation.y = rot.y();
-    grasp_pose.pose.orientation.z = rot.z();
+    //grasp_pose.pose.orientation.w = rot.w();
+    //grasp_pose.pose.orientation.x = rot.x();
+    //grasp_pose.pose.orientation.y = rot.y();
+    //grasp_pose.pose.orientation.z = rot.z();
 
-    feedback_.grasp_candidates.emplace_back(grasp_pose);
+    //feedback_.grasp_candidates.emplace_back(grasp_pose);
 
     // Grasp is selected based on cost not score
     // Invert score to represent grasp with lowest cost
-    feedback_.costs.emplace_back(static_cast<double>(1.0 / grasps.at(id)->getScore()));
+    //feedback_.costs.emplace_back(static_cast<double>(1.0 / grasps.at(id)->getScore()));
     
-    fw << trans.x()  <<" " << trans.y()   <<" "<< trans.z()   <<" "<< rot.x()   <<" "<< rot.y()   <<" "<< rot.z()   <<" "<< rot.w()   <<" "<< static_cast<double>(1.0 / grasps.at(id)->getScore()) << "\n";
+    fw << t.x()  <<" " << t.y()   <<" "<< t.z()   <<" "<< q.x()   <<" "<< q.y()   <<" "<< q.z()   <<" "<< q.w()   <<" "<< static_cast<double>(1.0 / grasps.at(id)->getScore()) << "\n";
 	  
   }
   fw.close();
     
   
   
-  //exit(0);
+  exit(0);
 
   server_->publishFeedback(feedback_);
   result_.grasp_state = "success";
