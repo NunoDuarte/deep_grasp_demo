@@ -1,6 +1,7 @@
 # Deep Grasp Demo
 <img src="https://picknik.ai/assets/images/logo.jpg" width="120">
-# My fork is stable to work on Ubuntu 20.04 and ROS noetic 
+
+## My fork is stable to work on Ubuntu 20.04 and ROS noetic 
 
 1) [Overview](#Overview) </br>
 2) [Packages](#Packages) </br>
