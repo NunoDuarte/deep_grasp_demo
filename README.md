@@ -1,7 +1,69 @@
+# My fork is stable to work on Ubuntu 20.04 and ROS noetic 
+This documentation is to run deep_grasp_demo in Ubuntu 20.04 with ROS Noetic
+## Dependencies
+- moveit_task_constructor repository
+- deep_grasp_demo repository
+- panda_moveit_config (Franka's moveit model) -  for the demos only
+- atenpas/gpd
+- PCL (tested on 1.11)
+- Eigen 
+- OpenCV 4.0 or higher (tested on v4.5.5)
+
+## Instructions
+Clone moveit_task_constructor repo to catkin workspace 
+```
+git clone https://github.com/ros-planning/moveit_task_constructor.git
+```
+Made a fork in case it doesn't work anymore (https://github.com/NunoDuarte/moveit_task_constructor) <br />
+Install missing packages with rosdep
+```
+rosdep install --from-paths . --ignore-src --rosdistro $ROS_DISTRO
+```
+Compile and source
+```
+cd catkin_ws
+catkin_make 
+source devel/setup.bash
+```
+Clone panda_moveit_config and compile 
+```
+git clone https://github.com/ros-planning/panda_moveit_config
+cd catkin_ws
+catkin_make 
+source devel/setup.bash
+```
+**Before compiling deep_grasp_demo** you need the gpd dependency. Follow the instructions on https://github.com/atenpas/gpd to correctly install and run
+## Setup
+Remove the moveit_task_constructor_dexnet since it is not the focus of this work. 
+Clone [deep_grasp_demo](https://github.com/NunoDuarte/deep_grasp_demo). I did clone the repo for archive reasons if the original version is not available or not working
+```
+git clone https://github.com/NunoDuarte/deep_grasp_demo
+```
+Compile and source
+```
+cd catkin_ws
+catkin_make 
+source devel/setup.bash
+```
+Don't forget to change the model parameters to the correct path
+```
+moveit_task_constructor_gpd/config/gpd_config.yaml -> weights_file = /path/to/gpd/models/lenet/15channels/params/
+```
+And point to the location of libgpd.so
+```
+moveit_task_constructor_gpd/CMakeLists.txt -> target_link_libraries(grasp_cloud_detection
+                                                                                        ${PROJECT_NAME}
+                                                                                        ${Eigen3_LIBRARIES}
+                                                                                        ${PCL_LIBRARIES}
+-                                                                                       ${GPD_LIB}
++                                                                                       /path/to/gpd/build/INSTALL/lib/libgpd.so
+
+```
+**deep_grasp_demo needs changes to the original version to work on Ubuntu 20.04 and ROS noetic**
+
+# From here is the original documentation
 # Deep Grasp Demo
 <img src="https://picknik.ai/assets/images/logo.jpg" width="120">
-
-## My fork is stable to work on Ubuntu 20.04 and ROS noetic 
 
 1) [Overview](#Overview) </br>
 2) [Packages](#Packages) </br>
